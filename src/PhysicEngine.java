@@ -28,8 +28,10 @@ public class PhysicEngine implements Engine{
 
     @Override
     public void update() {
-        for(DynamicSprite dynamicSprite : movingSpriteList){
-            dynamicSprite.moveIfPossible(environment);
+        if (Main.currentState == GameState.PLAYING) {
+            for (DynamicSprite sprite : movingSpriteList) {
+                sprite.moveIfPossible(environment);
+            }
         }
     }
 }

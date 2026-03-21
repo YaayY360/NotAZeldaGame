@@ -25,8 +25,27 @@ public class RenderEngine extends JPanel implements Engine{
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        for (Displayable renderObject:renderList) {
-            renderObject.draw(g);
+
+        switch (Main.currentState){
+            case TITLE_SCREEN:
+                g.setColor(Color.BLACK);
+                g.fillRect(0,0, getWidth(), getHeight());
+                g.setColor(Color.WHITE);
+                g.drawString("MON SUPER DONJON",130,200);
+                break;
+
+            case PLAYING:
+                for (Displayable renderObject:renderList) {
+                    renderObject.draw(g);
+                }
+                break;
+
+            case GAME_OVER:
+                g.setColor(Color.BLACK);
+                g.fillRect(0, 0, getWidth(), getHeight());
+                g.setColor(Color.RED);
+                g.drawString("GAME OVER", 160, 200);
+                break;
         }
     }
 
