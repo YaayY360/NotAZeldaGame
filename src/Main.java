@@ -19,7 +19,7 @@ public class Main {
     public Main() throws Exception{
 
 
-        displayZoneFrame = new JFrame("Java Labs");
+        displayZoneFrame = new JFrame("The Legends Of JAVA");
         displayZoneFrame.setSize(400,600);
         displayZoneFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -49,7 +49,7 @@ public class Main {
         uiLayer.setBounds(0, 0, 400, 600);
         layeredPane.add(uiLayer, JLayeredPane.PALETTE_LAYER);  // couche haute
 
-        JButton startButton = new JButton("Démarrer le jeu");
+        JButton startButton = new JButton();
         startButton.setBounds(120, 300, 160, 40);
         uiLayer.add(startButton);  // bouton dans la couche UI, pas dans renderEngine
 
