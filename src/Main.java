@@ -56,11 +56,7 @@ public class Main {
         displayZoneFrame.add(layeredPane);
         displayZoneFrame.setVisible(true);
 
-        renderEngine.setLayout(null);
-        JButton startButton = new JButton("Démarrer le jeu");
-        startButton.setBounds(120, 300, 150, 40); // Position (x, y) et taille (largeur, hauteur)
-        startButton.setBackground(Color.BLUE);
-        startButton.setOpaque(true);
+
 
 
 
@@ -70,7 +66,6 @@ public class Main {
             displayZoneFrame.requestFocus();       // TRÈS IMPORTANT : on redonne le focus à la fenêtre pour que le clavier remarche
         });
 
-        renderEngine.add(startButton);
         renderEngine.setVisible(true);
 
         Playground level = new Playground("./data/level1.txt");
