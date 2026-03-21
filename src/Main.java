@@ -1,6 +1,8 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -17,7 +19,6 @@ public class Main {
     public static GameState currentState = GameState.TITLE_SCREEN;
 
     public Main() throws Exception{
-
 
         displayZoneFrame = new JFrame("The Legends Of JAVA");
         displayZoneFrame.setSize(400,600);
@@ -42,34 +43,45 @@ public class Main {
         layeredPane.setPreferredSize(new Dimension(400, 600));
 
         renderEngine.setBounds(0, 0, 400, 600);
-        layeredPane.add(renderEngine, JLayeredPane.DEFAULT_LAYER);  // couche basse
+        layeredPane.add(renderEngine, JLayeredPane.DEFAULT_LAYER);
 
-        JPanel uiLayer = new JPanel(null);  // null layout pour setBounds
-        uiLayer.setOpaque(false);           // transparent !
+        JPanel uiLayer = new JPanel(null);
+        uiLayer.setOpaque(false);
         uiLayer.setBounds(0, 0, 400, 600);
-        layeredPane.add(uiLayer, JLayeredPane.PALETTE_LAYER);  // couche haute
+        layeredPane.add(uiLayer, JLayeredPane.PALETTE_LAYER);
 
-        JButton startButton = new JButton();
-        startButton.setBounds(120, 300, 160, 40);
-        uiLayer.add(startButton);  // bouton dans la couche UI, pas dans renderEngine
+        // ↓↓↓ BOUTON IMAGE ↓↓↓
+        ImageIcon buttonIcon      = new ImageIcon("./img/btn_start.png");
+        ImageIcon buttonIconHover = new ImageIcon("./img/btn_start_hover.png"); // optionnel
 
-        displayZoneFrame.add(layeredPane);
-        displayZoneFrame.setVisible(true);
+        JLabel startButton = new JLabel(buttonIcon);
+        startButton.setBounds(10, 400, buttonIcon.getIconWidth(), buttonIcon.getIconHeight());
+        startButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-
-
-
-
-        startButton.addActionListener(e -> {
-            Main.currentState = GameState.PLAYING; // On change l'état
-            startButton.setVisible(false);         // On cache le bouton
-            displayZoneFrame.requestFocus();       // TRÈS IMPORTANT : on redonne le focus à la fenêtre pour que le clavier remarche
+        startButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Main.currentState = GameState.PLAYING;
+                startButton.setVisible(false);
+                displayZoneFrame.requestFocus();
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                startButton.setIcon(buttonIconHover); // effet survol
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                startButton.setIcon(buttonIcon);
+            }
         });
 
-        renderEngine.setVisible(true);
+        uiLayer.add(startButton);
+        // ↑↑↑ FIN BOUTON IMAGE ↑↑↑
+
+        displayZoneFrame.add(layeredPane);
+        displayZoneFrame.setVisible(true); // toujours en dernier
 
         Playground level = new Playground("./data/level1.txt");
-        //SolidSprite testSprite = new DynamicSprite(100,100,test,0,0);
         renderEngine.addToRenderList(level.getSpriteList());
         renderEngine.addToRenderList(hero);
         physicEngine.addToMovingSpriteList(hero);
@@ -79,8 +91,6 @@ public class Main {
     }
 
     public static void main (String[] args) throws Exception {
-        // write your code here
         Main main = new Main();
     }
-
 }
