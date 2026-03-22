@@ -75,6 +75,7 @@ public class Main {
             }
         });
 
+
         uiLayer.add(startButton);
         // ↑↑↑ FIN BOUTON IMAGE ↑↑↑
 
@@ -88,6 +89,11 @@ public class Main {
         physicEngine.setEnvironment(level.getSolidSpriteList());
 
         displayZoneFrame.addKeyListener(gameEngine);
+
+        //affichage des coeurs
+        HeartsDisplay heartsDisplay = new HeartsDisplay(hero);
+        renderEngine.addToRenderList(heartsDisplay);
+
     }
 
     public static void main (String[] args) throws Exception {

@@ -9,6 +9,16 @@ public class DynamicSprite extends SolidSprite{
     private boolean isWalking =true;
     private final int spriteSheetNumberOfColumn = 10;
 
+    private int halfHearts = 6;      // 3 cœurs = 6 demi-cœurs
+    private final int maxHalfHearts = 6;
+
+    public int getHalfHearts() { return halfHearts; }
+    public int getMaxHalfHearts() { return maxHalfHearts; }
+
+    public void takeDamage() {
+        halfHearts = Math.max(0, halfHearts - 1); // 1 dégât = 1 demi-cœur
+        if (halfHearts == 0) Main.currentState = GameState.GAME_OVER;
+    }
     public DynamicSprite(double x, double y, Image image, double width, double height) {
         super(x, y, image, width, height);
     }
