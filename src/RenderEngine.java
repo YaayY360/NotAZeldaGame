@@ -8,6 +8,10 @@ import java.util.ArrayList;
 public class RenderEngine extends JPanel implements Engine{
     private ArrayList<Displayable> renderList;
     private Image titleBackground;
+    private int frameCount = 0;
+    private long lastTime = System.currentTimeMillis();
+    private int fps = 0;
+
 
     public RenderEngine(JFrame jFrame) {
 
@@ -53,6 +57,22 @@ public class RenderEngine extends JPanel implements Engine{
                     renderObject.draw(g);
                 }
                 paintChildren(g);
+
+                //calcul des FPS
+                frameCount++;
+                long now = System.currentTimeMillis();
+                if (now - lastTime >= 1000) {
+                    fps = frameCount;
+                    frameCount = 0;
+                    lastTime = now;
+                }
+
+                // Affichage FPS
+                g.setColor(Color.YELLOW);
+                g.setFont(new Font("Arial", Font.BOLD, 14));
+                g.drawString("FPS : " + fps, 10, 20);
+
+                paintChildren(g);
                 break;
 
             case GAME_OVER:
@@ -64,6 +84,8 @@ public class RenderEngine extends JPanel implements Engine{
                 paintChildren(g);
                 break;
         }
+
+
     }
 
     @Override
