@@ -4,58 +4,51 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.ArrayList;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class Main {
 
     JFrame displayZoneFrame;
-
     RenderEngine renderEngine;
     GameEngine gameEngine;
     PhysicEngine physicEngine;
 
     public static GameState currentState = GameState.TITLE_SCREEN;
 
-    public Main() throws Exception{
+    public Main() throws Exception {
 
         displayZoneFrame = new JFrame("The Legends Of JAVA");
-        displayZoneFrame.setSize(400,600);
+        displayZoneFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         displayZoneFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        displayZoneFrame.getContentPane().setBackground(Color.BLACK);
+        displayZoneFrame.getContentPane().setLayout(new BorderLayout());
 
-        DynamicSprite hero = new DynamicSprite(200,300,
-                ImageIO.read(new File("./img/heroTileSheetLowRes.png")),48,50);
+        DynamicSprite hero = new DynamicSprite(200, 300,
+                ImageIO.read(new File("./img/heroTileSheetLowRes.png")), 48, 50);
 
         renderEngine = new RenderEngine(displayZoneFrame);
         physicEngine = new PhysicEngine();
         gameEngine = new GameEngine(hero);
 
-        Timer renderTimer = new Timer(50,(time)-> renderEngine.update());
-        Timer gameTimer = new Timer(50,(time)-> gameEngine.update());
-        Timer physicTimer = new Timer(50,(time)-> physicEngine.update());
+        Timer renderTimer = new Timer(50, (time) -> renderEngine.update());
+        Timer gameTimer = new Timer(50, (time) -> gameEngine.update());
+        Timer physicTimer = new Timer(50, (time) -> physicEngine.update());
 
         renderTimer.start();
         gameTimer.start();
         physicTimer.start();
 
-        JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setPreferredSize(new Dimension(400, 600));
+        // RenderEngine remplit toute la fenêtre
+        displayZoneFrame.getContentPane().add(renderEngine, BorderLayout.CENTER);
 
-        renderEngine.setBounds(0, 0, 400, 600);
-        layeredPane.add(renderEngine, JLayeredPane.DEFAULT_LAYER);
-
-        JPanel uiLayer = new JPanel(null);
-        uiLayer.setOpaque(false);
-        uiLayer.setBounds(0, 0, 400, 600);
-        layeredPane.add(uiLayer, JLayeredPane.PALETTE_LAYER);
-
-        // ↓↓↓ BOUTON IMAGE ↓↓↓
+        // Bouton positionné directement dans le renderEngine
+        renderEngine.setLayout(null);
         ImageIcon buttonIcon      = new ImageIcon("./img/btn_start.png");
-        ImageIcon buttonIconHover = new ImageIcon("./img/btn_start_hover.png"); // optionnel
+        ImageIcon buttonIconHover = new ImageIcon("./img/btn_start_hover.png");
 
         JLabel startButton = new JLabel(buttonIcon);
-        startButton.setBounds(10, 400, buttonIcon.getIconWidth(), buttonIcon.getIconHeight());
+        startButton.setBounds(1300, 750, buttonIcon.getIconWidth(), buttonIcon.getIconHeight());
         startButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         startButton.addMouseListener(new MouseAdapter() {
@@ -67,7 +60,7 @@ public class Main {
             }
             @Override
             public void mouseEntered(MouseEvent e) {
-                startButton.setIcon(buttonIconHover); // effet survol
+                startButton.setIcon(buttonIconHover);
             }
             @Override
             public void mouseExited(MouseEvent e) {
@@ -75,11 +68,8 @@ public class Main {
             }
         });
 
+        renderEngine.add(startButton);
 
-        uiLayer.add(startButton);
-        // ↑↑↑ FIN BOUTON IMAGE ↑↑↑
-
-        displayZoneFrame.add(layeredPane);
         displayZoneFrame.setVisible(true); // toujours en dernier
 
         Playground level = new Playground("./data/level1.txt");
@@ -90,13 +80,11 @@ public class Main {
 
         displayZoneFrame.addKeyListener(gameEngine);
 
-        //affichage des coeurs
         HeartsDisplay heartsDisplay = new HeartsDisplay(hero);
         renderEngine.addToRenderList(heartsDisplay);
-
     }
 
-    public static void main (String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         Main main = new Main();
     }
 }

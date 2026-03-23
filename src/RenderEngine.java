@@ -14,7 +14,8 @@ public class RenderEngine extends JPanel implements Engine{
 
 
     public RenderEngine(JFrame jFrame) {
-
+        setBackground(Color.BLACK);  // ← fond noir au lieu de blanc
+        setPreferredSize(jFrame.getSize());
         renderList = new ArrayList<>();
         try {
             titleBackground = ImageIO.read(new File("./img/title_background.png"));
