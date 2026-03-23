@@ -71,7 +71,7 @@ public class RenderEngine extends JPanel implements Engine{
                 // Affichage FPS
                 g.setColor(Color.YELLOW);
                 g.setFont(new Font("Arial", Font.BOLD, 14));
-                g.drawString("FPS : " + fps, 325, 20);
+                g.drawString("FPS : " + fps, 1780, 20);
 
                 paintChildren(g);
                 break;
