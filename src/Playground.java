@@ -25,6 +25,9 @@ public class Playground {
             final int imageRockWidth = imageRock.getWidth(null);
             final int imageRockHeight = imageRock.getHeight(null);
 
+            final int imageTrapWidth = imageTrap.getWidth(null);
+            final int imageTrapHeight = imageTrap.getHeight(null);
+
             BufferedReader bufferedReader = new BufferedReader(new FileReader(pathName));
             String line=bufferedReader.readLine();
             int lineNumber = 0;
@@ -40,6 +43,16 @@ public class Playground {
                             break;
                         case 'R' : environment.add(new SolidSprite(columnNumber*imageRockWidth,
                                 lineNumber*imageRockHeight, imageRock, imageRockWidth, imageRockHeight));
+                            break;
+                        case 'P':
+                            environment.add(new TrapSprite(
+                                    columnNumber * imageTrapWidth,
+                                    lineNumber * imageTrapHeight,
+                                    imageTrap,
+                                    imageTrapWidth,
+                                    imageTrapHeight,
+                                    1  // 1 demi-cœur de dégât
+                            ));
                             break;
                     }
                     columnNumber++;
@@ -68,5 +81,13 @@ public class Playground {
             displayableArrayList.add((Displayable) sprite);
         }
         return displayableArrayList;
+    }
+
+    public ArrayList<TrapSprite> getTrapList() {
+        ArrayList<TrapSprite> trapList = new ArrayList<>();
+        for (Sprite sprite : environment) {
+            if (sprite instanceof TrapSprite) trapList.add((TrapSprite) sprite);
+        }
+        return trapList;
     }
 }

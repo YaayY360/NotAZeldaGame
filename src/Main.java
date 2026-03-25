@@ -78,6 +78,9 @@ public class Main {
         physicEngine.addToMovingSpriteList(hero);
         physicEngine.setEnvironment(level.getSolidSpriteList());
 
+        for (TrapSprite trap : level.getTrapList()) {
+            physicEngine.addTrap(trap);
+        }
         displayZoneFrame.addKeyListener(gameEngine);
 
         HeartsDisplay heartsDisplay = new HeartsDisplay(hero);
